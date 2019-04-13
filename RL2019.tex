@@ -1,0 +1,356 @@
+\documentclass[11pt, a4paper, dvipdfmx]{jsbook}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[psamsfonts]{amssymb}
+\usepackage{color}
+\usepackage{ascmac}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{fancybox}
+\usepackage{enumerate}
+\usepackage{verbatim}
+\usepackage{subfigure}
+\usepackage{proof}
+\usepackage{listings}
+\usepackage{otf}
+\usepackage[dvipdfmx]{hyperref}
+\usepackage{pxjahyper}
+%\usepackage{thmbox}
+%\usepackage{amsthm}
+\theoremstyle{definition}
+
+%
+%%%%%%%%%%%%%%%%%%%%%%
+%ここにないパッケージを入れる人は，必ずここに記載すること.
+%
+%%%%%%%%%%%%%%%%%%%%%%
+%ここからはコード表です.
+%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%
+
+\newcommand{\A}{\bf 証明}
+\newcommand{\B}{\it Proof}
+
+%英語で定義や定理を書きたい場合こっちのコードを使うこと.
+
+\newtheorem{Axiom+}{Axiom}[section]
+\newtheorem{Definition+}[Axiom+]{Definition}
+\newtheorem{Theorem+}[Axiom+]{Theorem}
+\newtheorem{Proposition+}[Axiom+]{Proposition}
+\newtheorem{Lemma+}[Axiom+]{Lemma}
+\newtheorem{Example+}[Axiom+]{Example}
+\newtheorem{Corollary+}[Axiom+]{Corollary}
+\newtheorem{Claim+}[Axiom+]{Claim}
+\newtheorem{Property+}[Axiom+]{Property}
+\newtheorem{Attention+}[Axiom+]{Attention}
+\newtheorem{Question+}[Axiom+]{Question}
+\newtheorem{Problem+}[Axiom+]{Problem}
+\newtheorem{Consideration+}[Axiom+]{Consideration}
+\newtheorem{Alert+}{Alert}
+
+%commmand
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\W}{{\cal W}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\cS}{{\cal S}}
+\newcommand{\Wpm}{W^{\pm}}
+\newcommand{\Wp}{W^{+}}
+\newcommand{\Wm}{W^{-}}
+\newcommand{\p}{\partial}
+\newcommand{\Dx}{D_{x}}
+\newcommand{\Dxi}{D_{\xi}}
+\newcommand{\lan}{\langle}
+\newcommand{\ran}{\rangle}
+\newcommand{\pal}{\parallel}
+\newcommand{\dip}{\displaystyle}
+\newcommand{\e}{\varepsilon}
+\newcommand{\dl}{\delta}
+\newcommand{\pphi}{\varphi}
+\newcommand{\ti}{\tilde}
+\title{数理強化学習入門}
+\author{yataka}
+\date{}
+\begin{document}
+\maketitle
+\tableofcontents
+\part{数学的知識}
+\chapter{集合論}
+ここでは集合を、ある条件を満たすものを集めたものとして定義する.
+\section{様々な集合}
+\begin{Definition+}(部分集合)\\
+  $X, Y$を集合とする.$X$が$Y$の部分集合であるとは
+  \begin{equation*}
+    \forall x \in X, x \in Y
+  \end{equation*}
+  が成り立つことであり, $X$が$Y$の部分集合であることを
+  \begin{equation*}
+    X\subset Y またはY \supset X
+  \end{equation*}
+  と表す.
+\end{Definition+}
+\begin{Definition+}(差集合)\\
+  $X, Y$を集合とする. $X$の元ではあるが$Y$の元ではないものを集めた集合を差集合といい$X-Y$と表す. すなわち
+  \begin{align*}
+    X - Y = \{x\in X| x\in X かつx\notin Y\}
+  \end{align*} 
+\end{Definition+}
+\begin{Definition+}(全体集合)
+  その状況における一番大きい集合となる集合を全体集合という.
+\end{Definition+}
+\begin{Definition+}(補集合)\\
+  $X$を全体集合とする. $A\subset X$とし差集合$X - A$を$A$の補集合といい$A^{c}$で表す. すなわち
+  \begin{align*}
+    A^{c} = \{x\in X| x\in X かつx\notin A\}
+  \end{align*} 
+\end{Definition+}
+\begin{Definition+}(和集合)
+  $A, B$を集合とする. $A$の元または$B$の元を集めた集合を$A$と$B$の和集合といい$A\cup B$と表す. すなわち
+  \begin{align*}
+    A\cup B = \{x\in X| x\in A またはx\in B\}
+  \end{align*}
+\end{Definition+}
+\begin{Definition+}(共通集合)\\
+  $A, B$を集合とする. $A$の元かつ$B$の元であるものを集めた集合を$A$と$B$の共通集合といい$A\cap B$と表す. すなわち
+  \begin{align*}
+    A\cap B = \{x\in X| x\in A またはx\in B\}
+  \end{align*}
+\end{Definition+}
+\section{集合と写像}
+\begin{Definition+}(写像)\\
+  $X, Y$を集合とする.
+  $f$が$X$の任意の要素を$Y$の元にただ一つ対応させる操作のことを写像といい, $X$から$Y$への写像であるということを
+  \begin{equation*}
+    f : X \to Y
+  \end{equation*}
+  と表す.
+\end{Definition+}
+\begin{Definition+}(単射)\\
+  $f$は$X$から$Y$への写像であるとする.$f$が
+  \begin{equation*}
+    \forall x_{1}, x_{2}\in X, f(x_{1}) = f(x_{2}) \Longrightarrow x_{1} = x_{2}
+  \end{equation*}
+  を満たすとき$f$は単射であるという.
+\end{Definition+}
+\begin{Definition+}(全射)\\
+  $f$は$X$から$Y$への写像であるとする.$f$が
+  \begin{equation*}
+    \forall y \in Y, \exists x\in X ~s.t.~ y = f(x)
+  \end{equation*}
+  を満たすとき$f$は全射であるという.
+\end{Definition+}
+\begin{Definition+}(全単射)\\
+  $f$は$X$から$Y$への写像であるとする.
+  $f$が単射かつ全射であるとき$f$は全単射であるという.
+\end{Definition+}
+\section{上限・下限と最大値・最小値}
+\section{集合系と集合族}
+\chapter{位相空間論}
+\chapter{力学系}
+
+\chapter{測度論}
+まず初めに測度論に関しての事項をのべる. 
+\section{測度空間}
+まず, 面積を測れる集合である$\sigma$-algebraを定義する.
+\begin{Definition+}($\sigma$-algebra)\\
+  $X$を集合とする. $X$の部分集合族$\F$が
+  \begin{enumerate}
+    \item $X\in \F$
+    \item $A\in \F\Longrightarrow A^{c}\in\F$
+    \item
+    \begin{equation*}
+      A_{i} \in\F(i\in\N) \Longrightarrow \bigcup_{i =1}^{\infty} A_{i} \in\F
+    \end{equation*}
+  \end{enumerate}
+  を満たす時$\F$を$\sigma$-algebraという.
+\end{Definition+}
+\begin{Example+}
+    集合$X$の冪集合$\mathcal{P}(X)$は$\sigma$-algebraとなる.
+    \begin{proof}
+      1.$X\in \mathcal{P}(X)$は$X\subset X$より言える.\\
+      2.$A\in \mathcal{P}(X)\Longrightarrow A^{c}\in \mathcal{P}(X)$を示す.\\
+      任意に$A\in \mathcal{P}(X)$をとる. $X - A\subset X$より, $A^{c}\in \mathcal{P}(X)$.\\
+      3. $A_{i}\in \mathcal{P}(X)(i\in\N)$ $\Longrightarrow$ $\dip \bigcup_{i =1}^{\infty} A_{i} \in \mathcal{P}(X)$を示す.\\
+      任意に$A_{i}\in \mathcal{P}(X)(i\in\N)$をとる. 
+      \begin{align*}
+        \bigcup_{i = 1}^{\infty} A_{i}\subset X
+      \end{align*}
+      であるので, $\dip \bigcup_{i = 1}^{\infty} A_{i}\in \mathcal{P}(X)$.\\
+      \\
+      1. 2. 3.より$\mathcal{P}(X)$は$\sigma$-algebraである.
+    \end{proof}
+  \end{Example+}
+  \begin{Theorem+}
+    $\F$を$\sigma$-algebraする. この時
+    \begin{enumerate}
+      \item $\phi\in\F$
+      \item \begin{equation*}
+        A_{1},A_{2},\cdots, A_{n}\in\F\Longrightarrow \bigcup_{i = 1}^{n}A_{i}\in\F
+      \end{equation*}
+      \item \begin{equation*}
+        A_{1},A_{2},\cdots, A_{n}\in\F\Longrightarrow \bigcap_{i = 1}^{n}A_{i}\in\F
+      \end{equation*}
+    \end{enumerate}
+  が成立する.
+  \begin{proof}
+    1. $X\in\F$より$\phi = X^{c}\in\F$.\\
+    2.  任意に$\F$の元$A_{1}, A_{2},\cdots, A_{n}$をとる.この時
+    \begin{equation*}
+      B_{i} =
+      \begin{cases}
+      A_{i} ~~~~(1 \leq i \leq n) \\
+      \phi  ~~~~~(i > n)
+    \end{cases}
+    \end{equation*}
+    として$B_{i}\in\F$ $(i\in\N)$を定義すれば, $\phi\in\F$より,
+    \begin{equation*}
+      \bigcup_{i = 1}^{n} A_{i}= \bigcup_{i = 1}^{\infty} B_{i}\in\F
+    \end{equation*}
+    3.任意に$\F$の元$A_{1}, A_{2},\cdots, A_{n}$をとる.この時定義より$A_{1}^{c}, A_{2}^{c}, \cdots, A_{n}^{c}\in\F$であり,
+    \begin{equation*}
+      \bigcap_{i = 1}^{n}A_{i} =  \left(\bigcup_{i = 1}^{n}A_{i}^{c}\right)^{c}\in\F
+    \end{equation*}
+  \end{proof}
+\end{Theorem+}
+\begin{Definition+}(可測空間)\\
+  集合$X$と$X$上の$\sigma$-algebraの組$(X, \F)$を可測空間と呼ぶ.
+\end{Definition+}
+次に面積を測る写像である測度$m$を定義する.
+\begin{Definition+}(測度)\\
+  $\F$を$\sigma$アルジェブラとする. $\F$上の写像$m$が,
+  \begin{enumerate}
+    \item  $\forall A\in\F, 0\leq m(A) \leq \infty$, 特に$m(\phi) = 0$
+    \item $A_{i}\in\F(i\in\N)$が互いに排反($\forall i, k\in\N, i\neq k\Rightarrow A_{i}\cap A_{k} = \phi$)であるならば
+    \begin{equation*}
+      m\left(\bigcup_{i = 1}^{\infty}A_{i}\right) = \sum_{i = 1}^{\infty} m\left(A_{i}\right)
+    \end{equation*}
+  \end{enumerate}
+  を満たす時$m$を$\F$上の測度という.
+\end{Definition+}
+\newpage
+\begin{Theorem+}
+$m$を$\F$上の測度とする. この時
+\begin{enumerate}
+  \item $A_{1},A_{2}, \cdots, A_{n}\in\F$が互いに排反である時
+  \begin{align*}
+      m\left(\bigcup_{i = 1}^{n}A_{i}\right) = \sum_{i = 1}^{n} m(A_{i})
+  \end{align*} 
+  \item $A, B\in\F$で$A\subset B$の時
+  \begin{align*}
+    m(A) \leq m(B)
+  \end{align*}
+  が成立し, 特に$m(A)<\infty$の時は
+  \begin{align*}
+    m(B - A) = m(B) - m(A)
+  \end{align*}
+  が成立する.
+\end{enumerate}
+\begin{proof}
+  1. 任意に互いに排反な$\F$の元$A_{1}, A_{2},\cdots, A_{n}$をとる.この時
+  \begin{equation*}
+    B_{i} =
+    \begin{cases}
+    A_{i} ~~~~(1 \leq i \leq n) \\
+    \phi  ~~~~~(i > n)
+  \end{cases}
+  \end{equation*}
+  として$B_{i}\in\F$ $(i\in\N)$を定義すれば, $m(\phi) = 0$より,
+  \begin{eqnarray*}
+    m\left(\bigcup_{i = 1}^{n} A_{i}\right) =  m\left(\bigcup_{i = 1}^{\infty} B_{i}\right)&=& \sum_{i = 1}^{\infty}m(B_{i})
+                                                = \sum_{i = 1}^{n} m (A_{i})
+  \end{eqnarray*}
+  2. 任意に$A, B\in\F$をとり$A\subset B$と仮定する. $C = B - A$とすれば
+  \begin{eqnarray}
+    m(B) = m(A\cup C) &=& m(A) + m(C) \nonumber \\
+                      &=& m(A) + m(B-A)\\
+                      &\leq&m(A)\nonumber
+  \end{eqnarray}
+  ここで$m(A)<\infty$とすれば, 上記の式より
+  \begin{align*}
+    m(B-A) = m(B) - m(A)
+  \end{align*}
+\end{proof}
+\end{Theorem+}  
+\begin{Definition+}(測度空間)\\
+  $(X, \F)$を可測空間とし$\F$上の測度を$m$とする. この時組$(X, \F, m)$を測度空間と呼ぶ.
+\end{Definition+}
+%%%%%%%%1.2
+\section{測度空間と位相空間}
+ここでは、位相空間から生成される$\sigma$-algebraについて述べる. 
+\begin{Theorem+}
+  $X$の部分集合からなる任意の集合族$\mathscr{U}$に対して, $\mathscr{U}$を含む最小の
+  $\sigma$-algebraが存在する. またこの$\sigma$-algebra のことを$\sigma(\mathscr{U})$と表す.
+\end{Theorem+}
+\begin{Definition+}(ボレル集合族)\\
+  $(X, \mathscr{O})$を位相空間とする. この時$\mathscr{O}$を含む最小の$\sigma$-algebraのことを
+  ボレル集合族といい$\mathcal{B}(\mathscr{O})$で表す. 特に, 位相空間が$(\R, \mathscr{O}_{\R})$
+  の時は$\mathcal{B}(\mathscr{\R})$と表す.
+\end{Definition+}
+
+\chapter{関数解析}
+\chapter{確率論}
+\section{確率測度・確率空間}
+いよいよ今まで書いてきた測度論に基づいて確率空間を定義する. 
+ \begin{Definition+}(確率測度)\\
+   $(\Omega, \F)$を可測空間とする. $\F$から$[0, 1]$への写像$P$が
+   \begin{enumerate}
+    \item $P(\Omega) = 1$
+    \item $A_{i}\in\F(i\in\N)$が互いに排反であるならば
+    \begin{equation*}
+      P\left(\bigcup_{i = 1}^{\infty}A_{i}\right) = \sum_{i = 1}^{\infty} P\left(A_{i}\right)
+    \end{equation*}
+  \end{enumerate}
+  を満たす時, $P$を確率測度と呼ぶ.
+ \end{Definition+}
+ \begin{Definition+}(確率空間)\\
+  $(\Omega, \F)$を可測空間とし$P$を確率測度とする. この時, 組$(\Omega, \F, P)$を確率空間と呼ぶ. また, $\Omega$を標本空間といい$\F$の元を事象と呼ぶ.
+\end{Definition+}
+測度論の節では$\sigma$アルジェブラを「面積が図れる集合の集まり」, 測度を「集合の面積」を測る写像
+と言うようなモチヴェーションで定義したが, 確率空間では$\sigma$アルジェブラを「確率が測れる集合の集まり」確率測度を
+「確率を測れる」写像としてそれぞれに対する解釈を変える.
+\begin{Theorem+}
+  $(\Omega, \F, P)$を確率空間とする.この時
+    \begin{align*}
+      \forall A\in\F, P(A^{c}) = 1 - P(A)
+    \end{align*}
+  が成立する.
+  \begin{proof}
+    任意に$A\in\F$をとり$X = \Omega - A$とする.$A\cap X = \phi$, $\Omega = A\cup X$であるので.
+    \begin{eqnarray*}
+      P(\Omega) &=& P(A\cup X)\\
+                &=& P(A) + P(X)
+    \end{eqnarray*}
+    $P(A) < \infty$より
+    \begin{eqnarray*}
+      P(X) &=& P(\Omega) - P(A)\\
+           &=& 1 - P(A)
+    \end{eqnarray*}
+    したがって, $X = \Omega - A = A^{c}$で$A$は任意だったから,
+    \begin{align*}
+      \forall A\in\F, P(A^{c}) = 1 - P(A)
+    \end{align*}
+    が成立する.
+  \end{proof}
+\end{Theorem+}
+
+\part{数理強化学習}
+\chapter{マルコフ決定過程}
+
+
+
+\begin{thebibliography}{50}
+  \bibitem{キー1} 内田 伏一(著)「集合と位相」
+  \bibitem{キー2} 参考文献の名前・著者2
+  \bibitem{キーN} 参考文献の名前・著者N
+\end{thebibliography}
+\end{document}
