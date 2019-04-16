@@ -51,6 +51,7 @@
 \newtheorem{Attention+}[Axiom+]{Attention}
 \newtheorem{Question+}[Axiom+]{Question}
 \newtheorem{Problem+}[Axiom+]{Problem}
+\newtheorem{Exercise+}[Axiom+]{Exercise}
 \newtheorem{Consideration+}[Axiom+]{Consideration}
 \newtheorem{Alert+}{Alert}
 
@@ -78,8 +79,9 @@
 \newcommand{\dl}{\delta}
 \newcommand{\pphi}{\varphi}
 \newcommand{\ti}{\tilde}
-\title{数理強化学習入門}
-\author{yataka}
+\title{Mathematical Reinforcement Learning}
+\author{yataka\\
+          \url{https://github.com/takaya0/Reinforcement_Learning}}
 \date{}
 \begin{document}
 \maketitle
@@ -88,25 +90,38 @@
 \chapter{集合論}
 ここでは集合を、ある条件を満たすものを集めたものとして定義する.
 \section{様々な集合}
+\begin{Definition+}(全体集合)\\
+  その状況における一番大きい集合となる集合を全体集合という.
+\end{Definition+}
 \begin{Definition+}(部分集合)\\
-  $X, Y$を集合とする.$X$が$Y$の部分集合であるとは
+  $X$を全体集合とし, $A, B$を集合とする. $A$が$B$の部分集合であるとは
   \begin{equation*}
-    \forall x \in X, x \in Y
+    \forall x\in X,  x\in A \implies x \in B
   \end{equation*}
-  が成り立つことであり, $X$が$Y$の部分集合であることを
+  が成り立つことであり, $A$が$B$の部分集合であることを
   \begin{equation*}
-    X\subset Y またはY \supset X
+    A\subset B またはB \supset A
   \end{equation*}
   と表す.
 \end{Definition+}
+\begin{Definition+}(空集合)\\
+  元を1つも含まない集合のことを空集合といい, $\phi$と表記する.
+\end{Definition+}
+\begin{Exercise+}
+  空集合は任意の集合の部分集合である.
+  \begin{proof}
+    $A$を任意の集合とする. 命題
+    \begin{align*}
+      \forall x\in X, x\in \phi\implies x\in A 
+    \end{align*}
+    は恒真であるので, 部分集合の定義より$\phi\subset A$が成立する.
+  \end{proof}
+\end{Exercise+}
 \begin{Definition+}(差集合)\\
   $X, Y$を集合とする. $X$の元ではあるが$Y$の元ではないものを集めた集合を差集合といい$X-Y$と表す. すなわち
   \begin{align*}
     X - Y = \{x\in X| x\in X かつx\notin Y\}
   \end{align*} 
-\end{Definition+}
-\begin{Definition+}(全体集合)
-  その状況における一番大きい集合となる集合を全体集合という.
 \end{Definition+}
 \begin{Definition+}(補集合)\\
   $X$を全体集合とする. $A\subset X$とし差集合$X - A$を$A$の補集合といい$A^{c}$で表す. すなわち
@@ -114,7 +129,7 @@
     A^{c} = \{x\in X| x\in X かつx\notin A\}
   \end{align*} 
 \end{Definition+}
-\begin{Definition+}(和集合)
+\begin{Definition+}(和集合)\\
   $A, B$を集合とする. $A$の元または$B$の元を集めた集合を$A$と$B$の和集合といい$A\cup B$と表す. すなわち
   \begin{align*}
     A\cup B = \{x\in X| x\in A またはx\in B\}
@@ -124,6 +139,26 @@
   $A, B$を集合とする. $A$の元かつ$B$の元であるものを集めた集合を$A$と$B$の共通集合といい$A\cap B$と表す. すなわち
   \begin{align*}
     A\cap B = \{x\in X| x\in A またはx\in B\}
+  \end{align*}
+\end{Definition+}
+\begin{Proposition+}(ド・モルガンの法則)\\
+  $A$, $B$を$X$の部分集合とする. この時, 以下の事が成立する.
+  \begin{enumerate}
+    \item $(A\cap B)^{c} = A^{c}\cup B^{c}$
+    \item $(A\cup B)^{c} = A^{c}\cap B^{c}$
+  \end{enumerate}
+\end{Proposition+}
+\begin{Exercise+}
+  $A$, $B$を$X$の部分集合とする. この時, 以下の等式を証明せよ.
+  \begin{enumerate}
+    \item $(A^{c})^{c} = A$
+    \item $(A - B)\cap B = \phi$
+  \end{enumerate}
+\end{Exercise+}
+\begin{Definition+}(直積集合)\\
+  $X$, $Y$を集合とする. 直積集合$X\times Y$を以下のように定義する.
+  \begin{align*}
+    X\times Y = \{(x, y)~|~x\in X,~ y\in Y\}
   \end{align*}
 \end{Definition+}
 \section{集合と写像}
@@ -149,13 +184,94 @@
   \end{equation*}
   を満たすとき$f$は全射であるという.
 \end{Definition+}
+\begin{Definition+}(像)\\
+  $X$, $Y$を集合とし, $f$を$X$から$Y$への写像であるとする. $X$の部分集合$S$の$f$による像を
+  \begin{align*}
+    f(S) = \{y\in Y~|~ \exists s\in S~s.t.~ f(s) = y\}
+  \end{align*}
+  と定義する. 定義より$f(S)$は$Y$の部分集合である.
+\end{Definition+}
+\begin{Theorem+}
+  $X$, $Y$を集合とする. 以下の2つは同値である.
+  \begin{enumerate}
+    \item $f$ は全射
+    \item $f(X) = Y$
+  \end{enumerate}
+  \begin{proof}
+    $1.)\implies 2.)$ $f(X)\subset Y$は自明なので$Y\subset f(X)$を示す. 任意に
+    $y\in Y$を任意にとる. $f$は全射だから
+    \begin{align*}
+      \exists x\in X~s.t.~ f(x) = y
+    \end{align*}
+    である. したがって$y\in f(X)$であるので$Y\subset f(X)$.\\
+    $2.)\implies 1.)$ 任意に$y\in Y$を任意にとる. $f(X) = Y$だから$y\in f(X)$である. 定義より
+    \begin{align*}
+      \exists x\in X~s.t.~ f(x) = y
+    \end{align*}
+    したがって$y\in Y$は任意なので, $f$は全射.
+  \end{proof}
+\end{Theorem+}
 \begin{Definition+}(全単射)\\
   $f$は$X$から$Y$への写像であるとする.
   $f$が単射かつ全射であるとき$f$は全単射であるという.
 \end{Definition+}
-\section{上限・下限と最大値・最小値}
 \section{集合系と集合族}
+ここからは集合を元に持つ集合を考えることにする.
+\begin{Definition+}(集合系)\\
+  $X$を集合とする. $X$の全ての部分集合の集合を集合系といい$\mathcal{P}(X)$と表記する. すなわち
+  \begin{align*}
+    \mathcal{P}(X) = \{A~|~ A\subset X\}
+  \end{align*}
+\end{Definition+}  
+\begin{Definition+}(集合族)\\
+  添字づけられた集合の集合のことを集合族といい, $(A_{\lambda} | \lambda \in \Lambda)$または$(A_{\lambda})_{\lambda\in\Lambda}$と表す. この時の$\Lambda$を添字集合という.
+\end{Definition+}
+\begin{Definition+}(部分集合族)\\
+  $X$を集合とする. $X$の部分集合からなる集合族のことを$X$の部分集合族という.
+\end{Definition+}
+\begin{Definition+}(集合族の和集合)\\
+  集合族$(A_{\lambda} | \lambda \in \Lambda)$の和集合を
+  \begin{align*}
+    \bigcup_{\lambda\in\Lambda}A_{\lambda} = \{x\in X| \exists \lambda\in\Lambda ~s.t. ~x\in A_{\lambda}\}
+  \end{align*}
+  と定義する.
+\end{Definition+}
+\begin{Definition+}(集合族の共通集合)\\
+  集合族$(A_{\lambda} | \lambda \in \Lambda)$の共通集合を
+  \begin{align*}
+    \bigcap_{\lambda\in\Lambda}A_{\lambda} = \{x\in X| \forall \lambda\in\Lambda ~s.t. ~x\in A_{\lambda}\}
+  \end{align*}
+  と定義する.
+\end{Definition+}
+
 \chapter{位相空間論}
+\section{距離空間}
+\begin{Definition+}(距離空間)\\
+  $X$を空でない集合とする. $d:X\times X\to\R$が, 任意の$x, y, x\in X$に対して
+  \begin{enumerate}
+    \item $d(x, y) \geq 0$
+    \item $d(x, y) = 0\Longleftrightarrow x = y$
+    \item $d(x, y) = d(y, x)$
+    \item $d(x, z) \leq d(x, y) + d(y, z)$
+  \end{enumerate}
+  を満たす時$d$を距離関数(上の4つの公理を距離の公理と呼ぶ)といい, 組$(X, d)$を距離空間という.
+\end{Definition+}
+\section{位相空間}
+\begin{Definition+}(位相空間)\\
+  $X$を空でない集合とする. $\mathcal{P}(X)$の部分集合$\mathscr{O}$が
+  \begin{enumerate}
+    \item $X,\phi\in\mathscr{O}$ 
+    \item $O_{1}, O_{2}, \cdots, O_{n}\in\mathscr{O}$ならば
+    \begin{align*}
+      \bigcap_{i = 1}^{n} O_{i}\in\mathscr{O}
+    \end{align*}
+    \item $(O_{\lambda}|\lambda\in\Lambda)$を$\mathscr{O}$の元からなる集合族とすれば
+    \begin{align*}
+      \bigcup_{\lambda\in\Lambda}O_{\lambda}\in\mathscr{O}
+    \end{align*}
+  \end{enumerate}
+  を満たす時, $\mathscr{O}$を$X$の位相といい, 組$(X, \mathscr{O})$を位相空間と呼ぶ.
+\end{Definition+}
 \chapter{力学系}
 
 \chapter{測度論}
@@ -270,11 +386,11 @@ $m$を$\F$上の測度とする. この時
                                                 = \sum_{i = 1}^{n} m (A_{i})
   \end{eqnarray*}
   2. 任意に$A, B\in\F$をとり$A\subset B$と仮定する. $C = B - A$とすれば
-  \begin{eqnarray}
+  \begin{eqnarray*}
     m(B) = m(A\cup C) &=& m(A) + m(C) \nonumber \\
                       &=& m(A) + m(B-A)\\
                       &\leq&m(A)\nonumber
-  \end{eqnarray}
+  \end{eqnarray*}
   ここで$m(A)<\infty$とすれば, 上記の式より
   \begin{align*}
     m(B-A) = m(B) - m(A)
@@ -287,15 +403,60 @@ $m$を$\F$上の測度とする. この時
 %%%%%%%%1.2
 \section{測度空間と位相空間}
 ここでは、位相空間から生成される$\sigma$-algebraについて述べる. 
+\begin{Lemma+}
+  $\Lambda$を添字集合とし, $\F_{\lambda}$を$\sigma$-algebraの族とする. この時
+  \begin{align*}
+    \F = \bigcap_{\lambda\in\Lambda}\F_{\lambda}
+  \end{align*}
+  とすれば$\F$も$\sigma$-algebraである.
+  \begin{proof}
+    $i)$ 各$\F_{\lambda}$は$\sigma$-algebraだから
+    \begin{align*}
+      \forall\lambda\in\Lambda, X\in\F_{\lambda}
+    \end{align*}
+    であるので、定義より$X\in\F$.\\
+    $ii)$ 任意に$\F$の元$A$をとる.
+    \begin{align*}
+      A\in\F
+    \end{align*}
+    定義より, 任意の$\lambda\in\Lambda$に対して
+    \begin{align*}
+      A\in\F_{\lambda}
+    \end{align*}
+    が成立する. 各$\F_{\lambda}$は$\sigma$-algebraだから
+    \begin{align*}
+      A^{c}\in\F_{\lambda}
+    \end{align*}
+    $\lambda\in\Lambda$は任意なので$A^{c}\in\F$.\\
+    $iii)$ $\{A_{n}\}_{n\in\N}$を$\F$の元からなる可算列とする. 定義より, 任意の$\lambda\in\Lambda$に対して
+    \begin{align*}
+      \{A_{n}\}_{n\in\N}\subset\F_{\lambda}
+    \end{align*}
+    が成立する.  各$\F_{\lambda}$は$\sigma$-algebraだから
+    \begin{align*}
+      \bigcup_{i = 1}^{\infty} A_{i}\in\F_{\lambda}
+    \end{align*}
+    $\lambda\in\Lambda$は任意なので
+    \begin{align*}
+      \bigcup_{i = 1}^{\infty} A_{i}\in\bigcap_{\lambda\in\Lambda}\F_{\lambda} = \F
+    \end{align*}
+    したがって$\F$は$\sigma$-algebraである.
+  \end{proof}
+\end{Lemma+}
 \begin{Theorem+}
   $X$の部分集合からなる任意の集合族$\mathscr{U}$に対して, $\mathscr{U}$を含む最小の
   $\sigma$-algebraが存在する. またこの$\sigma$-algebra のことを$\sigma(\mathscr{U})$と表す.
+  \begin{proof}
+    $\mathscr{O}$を含む$\sigma$-algebraは冪集合が$\sigma$-algebraであるので存在する. ここで$\mathscr{O}$を含む$\sigma$-algebra 全ての共通集合をとれば, 
+    ${\bf Lemma 4.2.1}$よりそれは$\sigma$-algebraであり, 最小である.
+  \end{proof}
 \end{Theorem+}
 \begin{Definition+}(ボレル集合族)\\
   $(X, \mathscr{O})$を位相空間とする. この時$\mathscr{O}$を含む最小の$\sigma$-algebraのことを
   ボレル集合族といい$\mathcal{B}(\mathscr{O})$で表す. 特に, 位相空間が$(\R, \mathscr{O}_{\R})$
   の時は$\mathcal{B}(\mathscr{\R})$と表す.
 \end{Definition+}
+\section{ルベーグ測度}
 
 \chapter{関数解析}
 \chapter{確率論}
@@ -315,8 +476,8 @@ $m$を$\F$上の測度とする. この時
  \begin{Definition+}(確率空間)\\
   $(\Omega, \F)$を可測空間とし$P$を確率測度とする. この時, 組$(\Omega, \F, P)$を確率空間と呼ぶ. また, $\Omega$を標本空間といい$\F$の元を事象と呼ぶ.
 \end{Definition+}
-測度論の節では$\sigma$アルジェブラを「面積が図れる集合の集まり」, 測度を「集合の面積」を測る写像
-と言うようなモチヴェーションで定義したが, 確率空間では$\sigma$アルジェブラを「確率が測れる集合の集まり」確率測度を
+測度論の節では$\sigma$-algebraを「面積が図れる集合の集まり」, 測度を「集合の面積」を測る写像
+と言うようなモチヴェーションで定義したが, 確率空間では$\sigma$-algebraを「確率が測れる集合の集まり」確率測度を
 「確率を測れる」写像としてそれぞれに対する解釈を変える.
 \begin{Theorem+}
   $(\Omega, \F, P)$を確率空間とする.この時
@@ -342,14 +503,337 @@ $m$を$\F$上の測度とする. この時
     が成立する.
   \end{proof}
 \end{Theorem+}
+\part{最適化とアルゴリズム}
+\chapter{最適化数学}
+\chapter{劣モジュラ関数}
+この章は本PDFの目標と関連性が薄いが, 最適化問題の具体例として紹介する. 
+\section{劣モジュラ関数}
+まず劣モジュラ関数を定義して行く. もしこれらの定義を見てよくわからないと感じた読者は参考文献[6]の動画が良い参考になる.
+\begin{Definition+}(集合関数)\\
+   $f$をVの冪集合$\mathcal{P}(V)$から$\R$への写像とする. この時$f$を集合関数と呼ぶ.
+\end{Definition+}
+\begin{Definition+}(離散微分)\\
+    $f$を集合関数とする. $S$を$V$の部分集合とし$e$を$V$の元とする. この時$f$の$S$での
+    離散微分(Discreate derivative)を
+    \begin{align*}
+        \Delta_{f}(e | S) := f(S\cup\{e\}) - f(S)
+    \end{align*}
+    と定義する.
+\end{Definition+}
+\begin{Definition+}(劣モジュラ関数)\\
+    $f$を集合関数とする. $f$が劣モジュラ関数(Submodular function)であるとは
+    \begin{align*}
+        \forall A, B\subset V, \forall e\in V, ~(A\subset B かつe\in V - B)\Longrightarrow \Delta_{f}(e | A)\geq\Delta_{f}(e | B)
+    \end{align*}
+    を満たすことをいう.
+\end{Definition+}
+\begin{Example+}(カバー関数)\\
+    劣モジュラ関数の具体例としてカバー関数(cover function)というものがある. カバー関数$f: 2^{V}\to\R$とは
+    \begin{align*}
+        f(T) = \left|\bigcup_{i\in T}S_{i}\right|\hspace{15pt}(T\subset V)
+    \end{align*}
+    で定義される関数である. ただし$S_{i}(1 \leq i\leq |V|)$は$\R^{2}$の有限部分集合である. この関数が劣モジュラ関数
+    であることをしめす.
+    \begin{proof}
+        任意に$V$の部分集合$A$, $B$と$e\in V$を取る. $A\subset B$, $e\in V - B$と仮定する.
+        まず
+        \begin{align*}
+            \bigcup_{i\in B\cup\{e\}}S_{i} - \bigcup_{i\in B}S_{i}\subset\bigcup_{i\in A\cup\{e\}}S_{i} - \bigcup_{i\in A}S_{i}
+        \end{align*}
+        であることを示す. 任意に$\dip \bigcup_{i\in B\cup\{e\}}S_{i} - \bigcup_{i\in B}S_{i}$の元$x$をとる.
+        \begin{align*}
+            x\in\bigcup_{i\in B\cup\{e\}}S_{i} - \bigcup_{i\in B}S_{i}
+        \end{align*}
+        \begin{align*}
+            x\in\bigcup_{i\in B\cup\{e\}}S_{i} かつ x\notin\bigcup_{i\in B}S_{i}
+        \end{align*}
+        ここで$A\subset B$であるので
+        \begin{align*}
+            x\in eかつ\forall i\in x\in A, x\notin S_{i} 
+        \end{align*}
+        \begin{align*}
+            x\in\bigcup_{i\in A\cup\{e\}}S_{i} - \bigcup_{i\in A}S_{i}
+        \end{align*}
+        したがって, 
+        \begin{align*}
+            \bigcup_{i\in B\cup\{e\}}S_{i} - \bigcup_{i\in B}S_{i}\subset\bigcup_{i\in A\cup\{e\}}S_{i} - \bigcup_{i\in A}S_{i}
+        \end{align*}
+        である. これより
+        \begin{align*}
+            f(A\cup\{e\}) - f(A) \geq f(B\cup\{e\}) - f(B)
+        \end{align*}
+        が言える. したがって$f$は劣モジュラ関数である.
+    \end{proof}
+\end{Example+}
+\begin{Theorem+}$f$を集合関数とする. この時
+  \begin{enumerate}
+      \item $f$は劣モジュラ関数である.
+      \item $\forall A, B\subset V, f(A\cap B) + f(A\cup B)\leq f(A) + f(B)$ 
+  \end{enumerate}
+  は同値である.
+  \begin{proof}
+      1.$\implies$2.) 任意に$A, B\subset V$をとる. $A - B = \phi$の時, すなわち
+      $A\subset B$の時は$A\cap B = A$, $A\cup B = B$より成立する. そこで, $A - B\neq\phi$の時を考える.
+      $| A - B| = m$とし$A - B = \{i_{1}, i_{2}, \cdots, i_{m}\}$とする. $A_{0} = A\cap B$, $B_{0} = B$として
+      $A_{k}, B_{k} (k\in\{1, 2, \cdots, m\})$を以下のように定義する.
+      \begin{align*}
+          A_{1} = A_{0}\cup\{i_{1}\}, ~~~~~ A_{2} = A_{0}\cup\{i_{1}, i_{2}\},~~~~~  \cdots, ~~~~~ A_{m} = A_{0}\cup\{i_{1}, i_{2}, \cdots, i_{m}\}\\
+          B_{1} = B_{0}\cup\{i_{1}\}, ~~~~~ B_{2} = B_{0}\cup\{i_{1}, i_{2}\},~~~~~  \cdots, ~~~~~ B_{m} = B_{0}\cup\{i_{1}, i_{2}, \cdots, i_{m}\}
+      \end{align*}
+      この時$A_{m} = A$, $B_{m} = A\cup B$である. また各$k\in\{1, 2, \cdots, m\}$に対して
+      \begin{align*}
+           A_{k - 1}\subset B_{k-1}かつA_{k} = A_{k-1}\cup\{i_{k}\}かつB_{k} = B_{k-1}\cup\{i_{k}\}
+      \end{align*}
+      が成立するので1.より
+      \begin{align*}
+          \forall k\in\{1, 2, \cdots, m\}, f(A_{k}) - f(A_{k - 1})\geq f(B_{k}) - f(B_{k-1})
+      \end{align*}
+      が成立する. $k$についてこの不等式の両辺の和をとると, 
+      \begin{align*}
+          \sum_{k =1}^{m}\left(f(A_{k}) - f(A_{k - 1})\right)\geq\sum_{k =1}^{m}\left(f(B_{k}) - f(B_{k - 1})\right)
+      \end{align*}
+      両辺を計算すると
+      \begin{align*}
+          f(A_{m}) - f(A_{0})\geq f(B_{m}) - f(B_{0})
+      \end{align*}
+      となる. $A_{0} = A\cap B$, $A_{m} = A$, $B_{m} = A\cup B$, $B_{0} = B$より
+      \begin{align*}
+          f(A) - f(A\cap B)\geq f(A\cup B) - f(B)
+      \end{align*}
+      $A$, $B$は任意より2.が成立する.\\
 
+      2.$\implies$1.) 任意に$A, B\subset V$と$i\in V - B$を$A\subset B$となるようにとる. $A^{'} = A\cup \{i\}, B^{'} = B$とすると2.より
+      \begin{align*}
+          f(A^{'}) + f(B^{'})\geq f(A^{'}\cup B^{'}) + f(A^{'}\cap B^{'})
+      \end{align*}
+      が成立する. ここで$A^{'}\cup B^{'} = B\cup\{i\}$, $A^{'}\cap B^{'} = A$であることから
+      \begin{align*}
+          f(A^{'}) + f(B^{'})\geq f(B\cup\{i\}) + f(A)
+      \end{align*}
+      $A^{'}, B^{'}$の定義より
+      \begin{align*}
+          f(A\cup \{i\}) + f(B)\geq f(B\cup\{i\}) + f(A)
+      \end{align*}
+      式を整理すると
+      \begin{align*}
+          f(A\cup \{i\}) - f(A)\geq f(B\cup\{i\}) - f(B)
+      \end{align*}
+      すなわち$\Delta_{f}(i | A)\geq\Delta_{f}(i | B)$である. $A, B\subset V$と$i\in V - B$は任意だったので, 
+      $f$は劣モジュラ関数である.
+  \end{proof}
+\end{Theorem+}
+\begin{Definition+}(単調)\\
+  $f$を集合関数とする. $f$が単調(Monotone)であるとは
+  \begin{align*}
+      \forall S, T\subset V,~ S\subset T\Longrightarrow f(S)\leq f(T)
+  \end{align*}
+  を満たすことを言う.
+\end{Definition+}
+\begin{Theorem+}
+  $f$を集合関数とする.このとき
+  \begin{enumerate}
+      \item $f$が単調である.
+      \item $\forall S\subset V, \forall e\in V,~ \Delta_{f}(e | S)\geq 0$
+  \end{enumerate}
+  は同値である.
+  \begin{proof}
+      証明は読者への演習問題とする.
+  \end{proof}
+\end{Theorem+}
+\begin{Theorem+}
+  $f_{1}, f_{2}, f$を劣モジュラ関数. $\alpha$を正の実数とする. この時
+  \begin{enumerate}
+      \item $f_{1} + f_{2} $ は劣モジュラ関数.
+      \item $\alpha f$は劣モジュラ関数.
+  \end{enumerate}
+  が成立する.
+  \begin{proof}
+      任意に$V$の部分集合$A$, $B$と$V$の元$e$をとる. $A\subset B$, $e\in V - B$と仮定する.\\
+      1. $f_{1}$, $f_{2}$は劣モジュラ関数 だから
+      \begin{align*}
+          \Delta_{f_{1}}(e|A)\geq \Delta_{f_{1}}(e|B)
+      \end{align*}
+      \begin{align*}
+          \Delta_{f_{2}}(e|A)\geq \Delta_{f_{2}}(e|B)
+      \end{align*}
+      が成立する. 両辺を足すと
+      \begin{align*}
+          \Delta_{f_{1}}(e|A) + \Delta_{f_{2}}(e|A)\geq \Delta_{f_{1}}(e|B) + \Delta_{f_{2}}(e|B)
+      \end{align*}
+      したがって
+      \begin{align*}
+          \Delta_{f_{1} + f_{2}}(e|A)\geq \Delta_{f_{1} + f_{2}}(e|B)
+      \end{align*}
+      したがって, $f_{1} + f_{2}$は劣モジュラ関数である.\\
+      2. $\alpha > 0$を任意にとる. $f$は劣モジュラ関数であるので
+      \begin{align*}
+          \Delta_{f}(e|A)\geq \Delta_{f}(e|B)
+      \end{align*}
+      両辺を$\alpha > 0$倍すると
+      \begin{align*}
+          \alpha\Delta_{f}(e|A)\geq \alpha\Delta_{f}(e|B)
+      \end{align*}
+      したがって
+      \begin{align*}
+          \Delta_{\alpha f}(e|A)\geq \Delta_{\alpha f}(e|B)
+      \end{align*}
+      したがって$\alpha f$ は劣モジュラ関数である.
+   \end{proof}
+\end{Theorem+}
+\begin{Definition+}(単調劣モジュラ関数)\\
+  集合関数$f$が劣モジュラかつ単調であるとき$f$を単調劣モジュラ関数(Monotone Submodular function)と言う.
+\end{Definition+}
+\section{単調劣モジュラ関数最大化問題と貪欲法}
+この節では$f$を非負の単調劣モジュラ関数とする.
+\subsection{単調劣モジュラ関数最大化問題}
+ 前節では劣モジュラ関数の定義および様々な性質を述べてきた. この節での目的は単調劣モジュラ関数を
+ ある条件のもと最大化\footnote{ここでの最大化とは出来るだけ関数の最大値に近づくような手法のことであり, 実際に関数の最大値が出る保証はない.}する$V$の部分集合
+ $S$を見つけるアルゴリズムを与えることである.
+ そして, この節では特に集合
+ \begin{align*}
+    \{ f(S)~|~S\subset V\text{ and }|S| \leq k\}
+ \end{align*} 
+ が最大値をとるときの$V$の部分集合$S$を見つけることが目標である(そのような$S$を最適解と呼ぶ). また$k$は$0<k\leq |V|$を満たす定数である. 
+ この問題をこの方程では単調劣モジュラ関数最大化問題(Monotone Submodular function maximization problem)と呼ぶことにする. 
+
+ \subsection{近似アルゴリズム}
+単調劣モジュラ関数最大化問題を解決するための手法について述べる. 
+まず, 最初に全探索アルゴリズムを考える. これは「制約下でのあらゆる可能性を全て探索する\footnote{実装はbit全探索というものをよく用いる}」アルゴリズムである. 
+このアルゴリズムであれば確実に解が出せるので単調劣モジュラ関数最大化問題を解決することができる. 
+しかしながら, このアルゴリズムでは$V$の部分集合全てを調べる必要があるため$2^{|V|}$回の計算を行う必要がある.(簡単のため$k = |V|$とした.)
+$y = 2^x$という関数は$x$がある程度大きくなると$y$は非常な大きな値となる. 
+これではいくらコンピュータを用いたとしても解くのは不可能である. そこで単調劣モジュラ関数最大化問題の真の解を求めることを諦め,
+近似解を求めるために「近似アルゴリズム」というものを利用する. 
+\begin{Theorem+}
+    単調劣モジュラ関数最大化問題には最適解が存在する.
+\begin{proof}
+    有限集合だから言える.
+\end{proof}
+これ以降単調劣モジュラ関数最大化問題の最適解を$S_{OPT}$と表記する.
+\end{Theorem+}
+\begin{Definition+}(近似アルゴリズム)\\
+    以下の2つのことを満たすアルゴリズム$\mathcal{A}$を近似アルゴリズムと呼ぶ.
+    \begin{enumerate}
+        \item $\mathcal{A}$によって近似解が多項式時間\footnote{この方程では多項式時間アルゴリズムの明確な定義はしない. 簡単に説明するならある程度実用的な速さで問題の解が求まるアルゴリズムと思ってもらえれば良い. }で得られる.
+        \item $S_{OPT}$と$\mathcal{A}$によって得られる近似解$S_{\mathcal{A}}$の$f$の値の比が一定値より高くなることが理論的に保証される.
+    \end{enumerate}
+\end{Definition+}
+\begin{Theorem+}
+    近似アルゴリズム$\mathcal{A}$によって得られる近似解$S_{\mathcal{A}}$とする. この時
+    \begin{align*}
+        f(S_{\mathcal{A}})\leq f(S_{OPT})
+    \end{align*}
+    が成立する.
+    \begin{proof}
+        最大値の定義より言える.
+    \end{proof}
+\end{Theorem+}
+近似アルゴリズムが与えられた時, そのアルゴリズムが良い近似アルゴリズかどうか判定するのには色々な
+ものがある. その一つに近似アルゴリズムが最適解にどれだけ近い値を出せているのかというものが考えられる. そこで近似率というものを定義する.
+\begin{Definition+}(近似率)\\
+    $ 0< \alpha \leq 1$と定数とし, 近似アルゴリズム$\mathcal{A}$によって得られる近似解$S_{\mathcal{A}}$とする. 
+    \begin{align*}
+        f(S_{\mathcal{A}})\leq \alpha(S_{OPT})
+    \end{align*}
+    が成立する最大の$\alpha$を$\mathcal{A}$の近似率と呼ぶ.
+\end{Definition+}
+\subsection{貪欲法}
+ 今回は単調劣モジュラ関数最大化問題を解くための近似アルゴリズムとして貪欲法(Greedy algorithm)というアルゴリズムを利用する. 貪欲法とは
+「その場における最適な解を選択する」というアルゴリズムである. 今回の問題においては
+\begin{align*}
+    S_{i} = S_{i - 1}\cup\mathop{\rm arg~max}\limits_{e\in V}\Delta_{f}(e~|~S_{i - 1})\hspace{15pt}(S_{0} = \phi)
+\end{align*}
+を満たす$V$の部分集合列$S_{1}$, $S_{2}$, $\cdots$, $S_{k}(0<k\leq |V|)$を決定することに他ならない. ただし, $\mathop{\rm arg~max}\limits_{e\in V}\Delta_{f}(e~|~S_{i - 1})$の元が2つ以上の場合はどれか一つを選ぶものとする. 
+また、このアルゴリズムは多項式時間アルゴリズムである. (本方程では多項式時間アルゴリズムの明確な定義はしていないためこの主張は証明をせず認めることにする.) 
+\begin{Proposition+}
+$S_{1}$, $S_{2}$$\cdots$, $S_{k}$を貪欲法によって選ばれた$V$の部分集合列とする. この時
+    \begin{align*}
+        f(S_{1})\leq f(S_{2})\leq \cdots \leq f(S_{k})
+    \end{align*}
+    が成立する.
+    \begin{proof}
+        $S_{1}\subset S_{2}\subset \cdots S_{k}$ と$f$の単調性より言える.
+    \end{proof}
+\end{Proposition+}
+
+\subsection{貪欲法の近似率}
+いよいよ主定理である貪欲法の近似定理\footnote{この名前は著者が勝手につけたものである.}について述べて行く.
+\begin{Lemma+}
+    $f$を劣モジュラ関数とする. この時
+    \begin{align*}
+        \forall S, T\subset V,~ S\subset T\implies f(S) - f(T)\leq \sum_{e\in T - S}\Delta_{f}(e|S)
+    \end{align*}
+    が成立する.
+\end{Lemma+}
+\begin{Lemma+}
+    $S_{1}$, $S_{2}$$\cdots$, $S_{k}$を貪欲法によって選ばれた$V$の部分集合列とする. この時任意の$l\in\{0, 1, 2, \cdots, k - 1\}$
+    に対して 
+    \begin{eqnarray*}
+          f(S_{l + 1}) -f(S_{l})&\geq& \frac{1}{|S_{OPT} - S_{l}|}(f(S_{OPT}) - f(S_{l})) \\
+                                                               &\geq& \frac{1}{k}(f(S_{OPT}) - f(S_{l}))
+    \end{eqnarray*}
+    が成立する.
+\end{Lemma+}
+この二つの補題の証明については参考文献の\cite{sub1}番や\cite{sub2}番を見て欲しい.
+\begin{Lemma+}
+    \begin{align*}
+        \forall x\in\R, ~1 - x\leq e^{-x}
+    \end{align*}
+    が成立する.
+\end{Lemma+}
+%主定理
+\begin{Theorem+}(貪欲法の近似定理, Nemhauser)\\
+  $S_{1}$, $S_{2}$$\cdots$, $S_{k}$を貪欲法によって選ばれた$V$の部分集合列とする. この時
+  \begin{align*}
+      \forall l\in\{1, 2, \cdots, k\}, ~f(S_{l}) \geq\left (1 - e^{-\frac{l}{k}}\right)f(S_{OPT})
+  \end{align*}
+  が成立する. 
+  \begin{proof}
+       $l\in\{0, 1, 2, \cdots, k - 1\}$を任意にとり, 各$i\in\{0, 1, 2, \cdots, k - 1\}$に対して$\delta_{i} = f(S_{OPT}) - f(S_{i})$ とする. すると
+       ${\bf Lemma 3.7.}$より
+      \begin{align*}
+          \delta_{l+1}\leq\left(1 - \frac{1}{k}\right)\delta_{l}
+      \end{align*}
+      である. この不等式と$f$の非負性より$\delta_{0} = f(S_{OPT}) - f(\phi)\leq f(S_{OPT})$であることと, ${\bf Lemma 3.8.}$を用いれば
+      \begin{align*}
+          \delta_{l}\leq \left(1 - \frac{1}{k}\right)^{l}\delta_{0}\leq e^{-\frac{l}{k}}f(S_{OPT})
+      \end{align*}
+      が従う. $\delta_{l}$の定義より
+      \begin{align*}
+          f(S_{l}) \geq\left (1 - e^{-\frac{l}{k}}\right)f(S_{OPT})
+      \end{align*}
+      が成立する.
+  \end{proof}
+\end{Theorem+}
+この定理より貪欲法が近似アルゴリズムであることと, 貪欲法の近似率が $1 - \frac{1}{e} \approx 0.62$ということがわかる.
+\section{応用例}
+ここでは単調劣モジュラ関数の応用例について紹介をする. 詳細については参考文献を見て欲しい.
+\begin{itemize}
+  \item 口コミ効果最大化
+  \item 文章要約問題
+  \item センサー配置問題
+  \item 施設の配置問題
+  \item 機械学習
+\end{itemize}
+このように単調劣モジュラ関数には様々な応用がある. 今回紹介した「(個数制約下での)単調劣モジュラ関数最大化問題」の他にも,
+ナップザック制約下での単調劣モジュラ関数最大化問題, マトロイド制約下での単調劣モジュラ関数最大化問題などがある. また単調劣モジュラ関数最小化問題
+というものもある. 興味のある読者は調べてみると面白いかもしれない.
+\part{数理機械学習}
+\chapter{単回帰分析・重回帰分析}
+\chapter{再生核ヒルベルト空間とカーネル法}
+%%%% Mathematical Reinforcement Learning
 \part{数理強化学習}
 \chapter{マルコフ決定過程}
-
+\chapter{深層強化学習}
+\part{強化学習の応用}
+\chapter{ゲームへの応用}
+\chapter{巡回セールスマン問題への応用}
 
 
 \begin{thebibliography}{50}
   \bibitem{キー1} 内田 伏一(著)「集合と位相」
+  \bibitem{sub1} 劣モジュラ最適化と機械学習・河原 吉伸,  永野 清仁・2015
+  \bibitem{sub2} \url{https://las.inf.ethz.ch/files/krause12survey.pdf}
   \bibitem{キー2} 参考文献の名前・著者2
   \bibitem{キーN} 参考文献の名前・著者N
 \end{thebibliography}
