@@ -79,6 +79,7 @@
 \newcommand{\dl}{\delta}
 \newcommand{\pphi}{\varphi}
 \newcommand{\ti}{\tilde}
+\newcommand{\Borel}{\mathcal{B}(\R)}
 \title{Mathematical Reinforcement Learning}
 \author{yataka\\
           \url{https://github.com/takaya0/Reinforcement_Learning}}
@@ -170,6 +171,12 @@
   \end{equation*}
   と表す.
 \end{Definition+}
+\begin{Definition+}(恒等写像)\\
+  $A$を$X$の部分集合とする. 以下で定義される$A$から$A$までの写像$id_{A}:A\to A$を恒等写像と呼ぶ.
+  \begin{align*}
+    id_{A}(a) = a
+  \end{align*}
+\end{Definition+}
 \begin{Definition+}(単射)\\
   $f$は$X$から$Y$への写像であるとする.$f$が
   \begin{equation*}
@@ -192,7 +199,7 @@
   と定義する. 定義より$f(S)$は$Y$の部分集合である.
 \end{Definition+}
 \begin{Theorem+}
-  $X$, $Y$を集合とする. 以下の2つは同値である.
+  $X$, $Y$を集合とし, $f$を$X$から$Y$への写像であるとする. 以下の2つは同値である.
   \begin{enumerate}
     \item $f$ は全射
     \item $f(X) = Y$
@@ -214,6 +221,14 @@
 \begin{Definition+}(全単射)\\
   $f$は$X$から$Y$への写像であるとする.
   $f$が単射かつ全射であるとき$f$は全単射であるという.
+\end{Definition+}
+\section{逆像と逆写像}
+\begin{Definition+}(逆像)\\
+  $X$, $Y$を集合とし, $f$を$X$から$Y$への写像であるとする. $Y$の部分集合$B$に対して$f$による逆像$f^{-1}(B)$を以下で定義する.
+  \begin{align*}
+    f^{-1}(B) = \{x\in X~|~f(x)\in B\}
+  \end{align*}
+  定義より逆像は$X$の部分集合である.  
 \end{Definition+}
 \section{集合系と集合族}
 ここからは集合を元に持つ集合を考えることにする.
@@ -243,7 +258,6 @@
   \end{align*}
   と定義する.
 \end{Definition+}
-
 \chapter{位相空間論}
 \section{距離空間}
 \begin{Definition+}(距離空間)\\
@@ -454,10 +468,26 @@ $m$を$\F$上の測度とする. この時
 \begin{Definition+}(ボレル集合族)\\
   $(X, \mathscr{O})$を位相空間とする. この時$\mathscr{O}$を含む最小の$\sigma$-algebraのことを
   ボレル集合族といい$\mathcal{B}(\mathscr{O})$で表す. 特に, 位相空間が$(\R, \mathscr{O}_{\R})$
-  の時は$\mathcal{B}(\mathscr{\R})$と表す.
+  の時は$\mathcal{B}(\R)$と表す.
 \end{Definition+}
 \section{ルベーグ測度}
+\section{可測関数}
+\begin{Definition+}(可測関数)\\
+  $(X_{1}, \F_{1})$, $(X_{2}, \F_{2})$を可測空間とする. $X_{1}$から$X_{2}$への写像$f$が
+  \begin{align*}
+    \forall A\in\F_{2}, f^{-1}(A)\in\F_{1}
+  \end{align*}
+  を満たす時, $f$を可測関数という.
+\end{Definition+}
 
+\begin{Theorem+}
+  $(X_{1}, \F_{1})$, $(X_{2}, \F_{2})$を可測空間とする. $f_{1}$, $f_{2}:X_{1}\to X_{2}$を有限値可測関数とし$\alpha\in\R$, $\beta\in\R$とする. この時
+  \begin{enumerate}
+    \item $\alpha f_{1} + \beta  f_{2}$は可測関数である.
+    \item $f_{1}f_{2}$は可測関数である.
+  \end{enumerate}
+  が成立する.
+\end{Theorem+}
 \chapter{関数解析}
 \chapter{確率論}
 \section{確率測度・確率空間}
@@ -503,6 +533,10 @@ $m$を$\F$上の測度とする. この時
     が成立する.
   \end{proof}
 \end{Theorem+}
+\section{確率変数と確率密度関数}
+\begin{Definition+}(確率変数)\\
+  $(\Omega, \F)$を可測空間とする. $(\Omega, \F)$から$(\R, \Borel)$への可測関数$X$を確率変数と呼ぶ.
+\end{Definition+}
 \part{最適化とアルゴリズム}
 \chapter{最適化数学}
 \chapter{劣モジュラ関数}
@@ -714,7 +748,7 @@ $y = 2^x$という関数は$x$がある程度大きくなると$y$は非常な�
 \begin{Definition+}(近似アルゴリズム)\\
     以下の2つのことを満たすアルゴリズム$\mathcal{A}$を近似アルゴリズムと呼ぶ.
     \begin{enumerate}
-        \item $\mathcal{A}$によって近似解が多項式時間\footnote{この方程では多項式時間アルゴリズムの明確な定義はしない. 簡単に説明するならある程度実用的な速さで問題の解が求まるアルゴリズムと思ってもらえれば良い. }で得られる.
+        \item $\mathcal{A}$によって近似解が多項式時間\footnote{このPDFでは多項式時間アルゴリズムの明確な定義はしない. 簡単に説明するならある程度実用的な速さで問題の解が求まるアルゴリズムと思ってもらえれば良い. }で得られる.
         \item $S_{OPT}$と$\mathcal{A}$によって得られる近似解$S_{\mathcal{A}}$の$f$の値の比が一定値より高くなることが理論的に保証される.
     \end{enumerate}
 \end{Definition+}

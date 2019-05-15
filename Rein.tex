@@ -1,0 +1,187 @@
+\documentclass[11pt, a4paper, dvipdfmx]{jsarticle}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[psamsfonts]{amssymb}
+\usepackage{color}
+\usepackage{ascmac}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{fancybox}
+\usepackage{enumerate}
+\usepackage{verbatim}
+\usepackage{subfigure}
+\usepackage{proof}
+\usepackage{listings}
+\usepackage{otf}
+
+\theoremstyle{definition}
+
+%
+%%%%%%%%%%%%%%%%%%%%%%
+%ここにないパッケージを入れる人は，必ずここに記載すること.
+%
+%%%%%%%%%%%%%%%%%%%%%%
+%ここからはコード表です.
+%
+
+\newtheorem{Axiom}{公理}[section]
+\newtheorem{Definition}[Axiom]{定義}
+\newtheorem{Theorem}[Axiom]{定理}
+\newtheorem{Proposition}[Axiom]{命題}
+\newtheorem{Lemma}[Axiom]{補題}
+\newtheorem{Corollary}[Axiom]{系}
+\newtheorem{Example}[Axiom]{例}
+\newtheorem{Claim}[Axiom]{主張}
+\newtheorem{Property}[Axiom]{性質}
+\newtheorem{Attention}[Axiom]{注意}
+\newtheorem{Question}[Axiom]{問}
+\newtheorem{Problem}[Axiom]{問題}
+\newtheorem{Consideration}[Axiom]{考察}
+\newtheorem{Alert}[Axiom]{警告}
+
+%%%%%%%%%%%%%%%%%%%%
+
+\newtheorem*{Axiom*}{公理}
+\newtheorem*{Definition*}{定義}
+\newtheorem*{Theorem*}{定理}
+\newtheorem*{Proposition*}{命題}
+\newtheorem*{Lemma*}{補題}
+\newtheorem*{Example*}{例}
+\newtheorem*{Corollary*}{系}
+\newtheorem*{Claim*}{主張}
+\newtheorem*{Property*}{性質}
+\newtheorem*{Attention*}{注意}
+\newtheorem*{Question*}{問}
+\newtheorem*{Problem*}{問題}
+\newtheorem*{Consideration*}{考察}
+\newtheorem*{Alert*}{警告}
+\renewcommand{\proofname}{\bfseries Proof}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%
+
+
+%英語で定義や定理を書きたい場合こっちのコードを使うこと.
+
+\newtheorem{Axiom+}{Axiom}[section]
+\newtheorem{Definition+}[Axiom+]{Definition}
+\newtheorem{Theorem+}[Axiom+]{Theorem}
+\newtheorem{Proposition+}[Axiom+]{Proposition}
+\newtheorem{Lemma+}[Axiom+]{Lemma}
+\newtheorem{Example+}[Axiom+]{Example}
+\newtheorem{Corollary+}[Axiom+]{Corollary}
+\newtheorem{Claim+}[Axiom+]{Claim}
+\newtheorem{Property+}[Axiom+]{Property}
+\newtheorem{Attention+}[Axiom+]{Attention}
+\newtheorem{Question+}[Axiom+]{Question}
+\newtheorem{Problem+}[Axiom+]{Problem}
+\newtheorem{Consideration+}[Axiom+]{Consideration}
+\newtheorem{Alert+}{Alert}
+
+%commmand
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\W}{{\cal W}}
+\newcommand{\cS}{{\cal S}}
+\newcommand{\Wpm}{W^{\pm}}
+\newcommand{\Wp}{W^{+}}
+\newcommand{\Wm}{W^{-}}
+\newcommand{\p}{\partial}
+\newcommand{\Dx}{D_{x}}
+\newcommand{\Dxi}{D_{\xi}}
+\newcommand{\lan}{\langle}
+\newcommand{\ran}{\rangle}
+\newcommand{\pal}{\parallel}
+\newcommand{\dip}{\displaystyle}
+\newcommand{\e}{\varepsilon}
+\newcommand{\dl}{\delta}
+\newcommand{\pphi}{\varphi}
+\newcommand{\ti}{\tilde}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\Borel}{\mathcal{B}}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\Prob}{(\Omega, \mathcal{F}, \P)}
+\newcommand{\MDP}{(\X, \A, P_{0})}
+\title{速習 強化学習}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+\section{マルコフ決定過程}
+完備な確率空間を$\Prob$とする.
+\begin{Definition+}(可算MDP)\\
+    可算な状態集合を$\X$, 可算な行動集合を$\A$とする. この時遷移確率カーネル$P_{0}:\Borel(\X\times\R)\times\X\times\A\to [0, 1]$を
+    \begin{align*}
+        P_{0}(U, x, a) = P_{0}(U~|~x, a)
+    \end{align*}
+    と定める. ここで$P_{0}$をは$\X\times\R$上の確率測度である. この時$(\X, \A, P_{0})$を可算MDPという.
+\end{Definition+}
+\begin{Definition+}(状態遷移確率カーネル)\\
+    $(\X, \A, P_{0})$を可算MDPとする. 状態遷移確率確率カーネル$P:\X\times\A\times\X\to [0, 1]$を
+    \begin{align*}
+        P(x, a, y) = P_{0}(\{y\}\times\R~|~x, a)
+    \end{align*}
+    と定める.
+\end{Definition+}    
+
+\begin{Definition+}(即時報酬関数, 即時報酬)\\
+    $(\X, \A, P_{0})$を可算MDPとする. 
+    即時報酬と呼ばれる確率変数$R_{(x, a)}:\Omega\to\X$を考える. ただし$(x, a)\in\X\times\A$であり$R_{(x, a)}$は$(x, a)$に依存する.
+    即時報酬が$(Y_{(x, a)}, R_{(x, s)})\sim P_{0}(\cdot|x, a)$である時,(ただし$Y_{(r, a)}:\Omega\to\A$は確率変数)即時報酬関数$r:\X\times\A\to\R$を   
+    \begin{align*}
+        r(x, a) = \E[R_{(x, a)}]
+    \end{align*}    
+    と定める.
+\end{Definition+}
+
+\begin{Proposition+}
+    任意の$x\in\X, a\in\A$について, 確率1で$|R_{(x, a)}| < M$であるならば
+    \begin{align*}
+        \|r\|_{\infty} = \sup_{(x, a)\in\X\times\A}|r(x, a)|<M
+    \end{align*}    
+    が成立する.
+    \begin{proof}
+        \begin{align*}
+            r(x, a) = \int_{\Omega}r(x, a) < \int_{\Omega}M d\P = M\times\P(\Omega) = M
+        \end{align*}
+        これが任意の$(x, a)\in\X\times\A$について成立するので
+        \begin{align*}
+            \|r\|_{\infty} = \sup_{(x, a)\in\X\times\A}|r(x, a)|<M
+        \end{align*}    
+        が成り立つ. 
+    \end{proof}
+\end{Proposition+}
+
+マルコフ決定過程は逐次的な意思決定問題を記述する空間である. $\MDP$を可算MDPとする.
+$t\in\N$とし$X_{t}:\Omega\to\X, A_{t}:\Omega\to\A$を確率変数とする. 
+この選択された行動が実行されると, システムにそれを反映した行動が生じる.
+\begin{align*}
+    (X_{t + 1}, R_{t + 1})\sim P_{0}(\cdot|X_{t}, A_{t})
+\end{align*}
+ここで, 任意の$x, y\in\X$, $a\in\A$について$\P(X_{t + 1} = y~|X_{t} = x, A_{t} = a) = P(x, a, y)$である.
+また, 任意の$w\in\Omega$に対して$\E[R_{t+1}|X_{t}(w), A_{t}(w)] = r(X_{t}(w), A_{t}(w))$である.
+
+\begin{Definition+}(行動則)\\
+    行動を選択するルールのことを行動則という.
+\end{Definition+}
+行動則と確率的に決定される初期状態$X_{0}:\Omega\to\X$によって, 状態-行動-報酬の系列$((X_{t}, A_{t}, R_{t + 1};t\geq 0 ))$が確率的に
+決定される. 
+$(X_{t + 1}, R_{t + 1})$は$(X_{t + 1}, R_{t + 1})\sim P_{0}(\cdot|X_{t}, A_{t})$より, $(X_{t}, A_{t})$に依存している.
+
+\begin{Definition+}(報酬)\\
+    $0\leq \gamma\leq 1$を割引率とする. 報酬$R$を以下のように定義する.
+    \begin{align*}
+        R = \sum_{t = 0}^{\infty} \gamma^{t} R_{t + 1}
+    \end{align*}
+\end{Definition+}
+割引率$\gamma$が0以上1未満で上で定義される報酬を持つ$MDP$を割引報酬MDPと呼び, 割引率が1の時の報酬を持つMDPは割引なしと呼ばれる.
+
+\end{document}
